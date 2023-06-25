@@ -8,3 +8,5 @@ var actors = 1;
 (int irow, int icol)[] valueTuples = new(int irow, int icol)[actors];
 Console.WriteLine(valueTuples[0].irow);
 Console.WriteLine(valueTuples[0].icol);
+
+Console.WriteLine("Test String");
