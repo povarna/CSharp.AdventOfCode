@@ -2,27 +2,49 @@
 
 public class Problem
 {
-    public int Part1(string input)
+    public int Part1(string input) => VisitedCount(input, 1);
+    
+    public int Part2(string input) => VisitedCount(input, 2);
+
+    private int VisitedCount(string input, int actors)
     {
         var visited = new HashSet<(int, int)> { (0, 0) };
-        (int irow, int icol) currentPosition = (0, 0);
-        foreach (var ch in input)
+        var positions = new (int irow, int icol)[actors];
+        for (var i = 0; i < actors; i++)
         {
-            switch (ch)
-            {
-                case '^': currentPosition.irow-- ; break;
-                case '<': currentPosition.icol--; break;
-                case '>': currentPosition.icol++; break;
-                case 'v': currentPosition.irow++; break;
-            }
-            visited.Add(currentPosition);
+            positions[i] = (0, 0);
         }
+
+        var actor = 0;
+        foreach (var t in input)
+        {
+            var newPosition = GetNewPosition(t, positions[actor]);
+            visited.Add(newPosition);
+            positions[actor] = newPosition;
+            actor = (actor + 1) % actors;
+        }
+
         return visited.Count;
     }
 
-    public int Part2(string input)
+    private (int, int) GetNewPosition(char ch, (int irow, int icol) position)
     {
-        return -1;
+        switch (ch)
+        {
+            case '^':
+                position.irow--;
+                break;
+            case '<':
+                position.icol--;
+                break;
+            case '>':
+                position.icol++;
+                break;
+            case 'v':
+                position.irow++;
+                break;
+        }
+
+        return position;
     }
-    
 }
