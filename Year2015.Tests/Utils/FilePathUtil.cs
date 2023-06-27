@@ -2,7 +2,7 @@
 
 public static class FilePathUtil
 {
-    public static string ReadInputAsString(int day, string inputFileName)
+    public static string ReadInputAsString(int day, string inputFileName="input.txt")
     {
         if (day is < 0 or > 25)
             throw new ArgumentException(
