@@ -15,7 +15,7 @@ public class Problem
             positions[i] = (0, 0);
         }
 
-        var actor = 0;
+        int actor = 0;
         foreach (var t in input)
         {
             var newPosition = GetNewPosition(t, positions[actor]);
