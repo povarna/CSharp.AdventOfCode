@@ -1,6 +1,4 @@
-﻿using Year2015.Day07;
-
-namespace Year2015.Day07;
+﻿namespace Year2015.Day07;
 
 public class Problem
 {
