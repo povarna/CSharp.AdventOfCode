@@ -14,5 +14,19 @@ public class Problem
             })
             .Select(t => t.charCount - t.inMemoryCount)
             .Sum();
-    
+
+    public int Part2(string input) =>
+        input.Split("\n")
+            .Select(line => new
+            {
+                lineLenght = line.Length,
+                newLineLenght = ("\"" +
+                                 line
+                                     .Replace("\\", "\\\\")
+                                     .Replace("\"", "\\\"")
+                                 + "\"")
+                    .Length
+            })
+            .Select(l => l.newLineLenght - l.lineLenght)
+            .Sum();
 }

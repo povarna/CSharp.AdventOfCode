@@ -19,6 +19,14 @@ public class Day08ProblemTest
     public void Part1Solution()
     {
         var result = _problem.Part1(_lines);
-        _testOutputHelper.WriteLine($"AOC2015, Day07, Part1 solution result: {result}");
+        _testOutputHelper.WriteLine($"AOC2015, Day08, Part1 solution result: {result}");
     }
+    
+    [Fact]
+    public void Part2Solution()
+    {
+        var result = _problem.Part2(_lines);
+        _testOutputHelper.WriteLine($"AOC2015, Day08, Part2 solution result: {result}");
+    }
+    
 }
