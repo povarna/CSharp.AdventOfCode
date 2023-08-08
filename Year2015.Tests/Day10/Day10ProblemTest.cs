@@ -1,6 +1,5 @@
 ﻿using Xunit.Abstractions;
 using Year2015.Day10;
-using Year2015.Tests.Utils;
 
 namespace Year2015.Tests.Day10;
 
