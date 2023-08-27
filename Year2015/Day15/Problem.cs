@@ -66,9 +66,9 @@ public class Problem
             var totalScores = CalculateTotalScore(numberOfProperties, partitionLength, propsArray);
 
             if (calories.HasValue && totalScores.Last() != calories.Value) continue;
-            
+
             var totalScore = CalculateTotalScore(totalScores);
-            if (totalScore > 0 ) ingredientsWeight.Add(totalScore);
+            if (totalScore > 0) ingredientsWeight.Add(totalScore);
         }
 
         return ingredientsWeight;
@@ -112,5 +112,13 @@ public class Problem
                 }
             }
         }
+    }
+
+    private static IEnumerable<int[]> Distribute4(int max)
+    {
+        for (var a = 0; a <= max; a++)
+        for (var b = 0; b <= max - a; b++)
+        for (var c = 0; c <= max - a - b; c++)
+            yield return new[] { a, b, c, max - a - b - b };
     }
 }
