@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.CommandLine;
-using System.Reflection;
+using ConsoleApp.Utils;
 
 namespace ConsoleApp;
 
@@ -34,23 +34,34 @@ class Program
             partOption
         };
 
-
         command.SetHandler(RunAoCProblem,
             yearOption, dayOption, partOption);
 
         return await command.InvokeAsync(args);
     }
 
-    private static void RunAoCProblem(int year, int day, IEnumerable<int> part)
+    private static void RunAoCProblem(int year, int day, IEnumerable<int> parts)
     {
         var yearPath = $"Year{year}";
-        var dayPath = day is > 0 and < 9 ? $"Day0{day}" : $"Day{day}";
+        var dayNumber = FilePathUtil.GetDayNumber(day);
+        var dayPath = $"Day{dayNumber}";
+        var problem = $"ConsoleApp.{yearPath}.{dayPath}.Problem";
+        var input = FilePathUtil.ReadInputAsString(year, day);
 
-        var magicType = Type.GetType($"ConsoleApp.{yearPath}.{dayPath}.Problem");
-        var magicConstructor = magicType?.GetConstructor(Type.EmptyTypes);
-        var magicClassObject = magicConstructor?.Invoke(Array.Empty<object>());
-        var magicMethod = magicType?.GetMethod($"Part{part.First()}", BindingFlags.Static | BindingFlags.Public);
-        var magicValue = magicMethod?.Invoke(magicClassObject, new object[] { "Test input " + "part: " + part.First() });
-        Console.WriteLine(magicValue);
+        var listParts = parts.ToList();
+        FilePathUtil.ValidateParts(listParts);
+
+        foreach (var part in listParts)
+        {
+            var magicType = Type.GetType(problem);
+            var magicConstructor = magicType?.GetConstructor(Type.EmptyTypes);
+            var magicClassObject = magicConstructor?.Invoke(Array.Empty<object>());
+            
+            var magicMethod = magicType?.GetMethod($"Part{part}");
+            
+            var response =
+                magicMethod?.Invoke(magicClassObject, new object[] { input });
+            Console.WriteLine($"AOC2015, Day{dayNumber}, Part{part} solution result: {response}");
+        }
     }
 }
