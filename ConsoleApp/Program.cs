@@ -27,20 +27,35 @@ class Program
         );
         partOption.AddAlias("-p");
 
-        var command = new Command("solve", "Solve Advent Of Code Problem")
+        var aocCommand = new RootCommand("Advent of code problems command line");
+        var dayCommand = new Command("solve-day-problem", "Solve Advent Of Code Problem")
         {
             yearOption,
             dayOption,
             partOption
         };
+        var yearCommand = new Command("solve-year-problems", "Solve all year problems")
+        {
+            yearOption
+        };
+        aocCommand.AddCommand(dayCommand);
+        aocCommand.AddCommand(yearCommand);
 
-        command.SetHandler(RunAoCProblem,
-            yearOption, dayOption, partOption);
-
-        return await command.InvokeAsync(args);
+        dayCommand.SetHandler(RunAoCDayProblem, yearOption, dayOption, partOption);
+        yearCommand.SetHandler(RunAoCYearProblems, yearOption);
+        
+        return await aocCommand.InvokeAsync(args);
     }
 
-    private static void RunAoCProblem(int year, int day, IEnumerable<int> parts)
+    private static void RunAoCYearProblems(int year)
+    {
+        for (var i = 1; i <= 22; i++)
+        {
+            RunAoCDayProblem(year, i, new List<int> { 1, 2 });
+        }
+    }
+
+    private static void RunAoCDayProblem(int year, int day, IEnumerable<int> parts)
     {
         var yearPath = $"Year{year}";
         var dayNumber = FilePathUtil.GetDayNumber(day);
@@ -56,9 +71,9 @@ class Program
             var magicType = Type.GetType(problem);
             var magicConstructor = magicType?.GetConstructor(Type.EmptyTypes);
             var magicClassObject = magicConstructor?.Invoke(Array.Empty<object>());
-            
+
             var magicMethod = magicType?.GetMethod($"Part{part}");
-            
+
             var response =
                 magicMethod?.Invoke(magicClassObject, new object[] { input });
             Console.WriteLine($"AOC2015, Day{dayNumber}, Part{part} solution result: {response}");
