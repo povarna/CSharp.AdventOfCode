@@ -1,10 +1,12 @@
 ## C# AdventOfCode Solutions
 
-View problems results by running the dotnet test command:
+Running day problem:
 ```
-$ dotnet  test --logger:"console;verbosity=detailed"  
+cd ConsoleApp/bin/Debug/net6.0
+dotnet ConsoleApp.dll -y 2015 -d 1 -p 1 -p 2
 ```
-Run Specific Test:
+
+Run all the problems from a specific year:
 ```
-$ dotnet  test --logger:"console;verbosity=detailed" --filter "Year2015.Tests.Day02.Day02ProblemTest"
+ConsoleApp\Run_all_year_problems.ps1   
 ```
