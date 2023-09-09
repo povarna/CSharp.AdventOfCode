@@ -3,36 +3,38 @@
 public class Problem
 {
     private static readonly HashSet<(int, int)> FixedPoints = new();
-
-    public int Part1(string input, int m, int n)
+    private const int M = 100;
+    private const int N = 100;
+    
+    public int Part1(string input)
     {
-        var grid = ParseInput(input, m, n);
+        var grid = ParseInput(input, M, N);
         for (var i = 0; i < 100; i++)
         {
-            grid = UpdateGrid(grid, m, n, false);
+            grid = UpdateGrid(grid, M, N, false);
         }
 
-        return CountOpenLights(m, n, grid);
+        return CountOpenLights(M, N, grid);
     }
 
 
-    public int Part2(string input, int m, int n)
+    public int Part2(string input)
     {
         FixedPoints.Add((0, 0));
-        FixedPoints.Add((0, n - 1));
-        FixedPoints.Add((m - 1, 0));
-        FixedPoints.Add((m - 1, n - 1));
+        FixedPoints.Add((0, N - 1));
+        FixedPoints.Add((M - 1, 0));
+        FixedPoints.Add((M - 1, N - 1));
 
-        var grid = ParseInput(input, m, n);
+        var grid = ParseInput(input, M, N);
         SetFixedPoints(grid, FixedPoints);
 
         for (var i = 0; i < 100; i++)
         {
-            grid = UpdateGrid(grid, m, n, true);
+            grid = UpdateGrid(grid, M, N, true);
             SetFixedPoints(grid, FixedPoints);
         }
 
-        return CountOpenLights(m, n, grid);
+        return CountOpenLights(M, N, grid);
     }
 
     private static void SetFixedPoints(char[,] grid, HashSet<(int, int)> fixedPoints)

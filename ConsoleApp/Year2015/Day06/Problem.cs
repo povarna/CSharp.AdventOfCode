@@ -2,9 +2,9 @@
 
 public class Problem
 {
-    public int Part1(List<string> lines)
+    public int Part1(string input)
     {
-        var instructions = InputParser.Parse(lines);
+        var instructions = input.Split("\n").ToList().Parse();
         var grid = new int[1000, 1000];
 
         int SwitchFunc(LightAction lightAction, int currentVal) => lightAction switch
@@ -20,9 +20,9 @@ public class Problem
         return CalculateTotal(grid, Func);
     }
 
-    public int Part2(List<string> lines)
+    public int Part2(string lines)
     {
-        var instructions = InputParser.Parse(lines);
+        var instructions = lines.Split("\n").ToList().Parse();
         var grid = new int[1000, 1000];
 
         int SwitchFunc(LightAction lightAction, int currentVal) => lightAction switch

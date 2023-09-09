@@ -6,7 +6,7 @@ public class Problem
     {
         foreach (var password in Words(input))
         {
-            if (global::Year2015.Day11.PasswordValidator.IsPasswordValid(password))
+            if (password.IsPasswordValid())
             {
                 return password;
             }
@@ -20,7 +20,7 @@ public class Problem
         var firstValidPassword = Part1(input);
         foreach (var password in Words(firstValidPassword))
         {
-            if (global::Year2015.Day11.PasswordValidator.IsPasswordValid(password))
+            if (password.IsPasswordValid())
             {
                 return password;
             }

@@ -26,33 +26,15 @@ class Program
             description: "Advent of code day problem part"
         );
         partOption.AddAlias("-p");
-
-        var aocCommand = new RootCommand("Advent of code problems command line");
-        var dayCommand = new Command("solve-day-problem", "Solve Advent Of Code Problem")
-        {
-            yearOption,
-            dayOption,
-            partOption
-        };
-        var yearCommand = new Command("solve-year-problems", "Solve all year problems")
-        {
-            yearOption
-        };
-        aocCommand.AddCommand(dayCommand);
-        aocCommand.AddCommand(yearCommand);
-
-        dayCommand.SetHandler(RunAoCDayProblem, yearOption, dayOption, partOption);
-        yearCommand.SetHandler(RunAoCYearProblems, yearOption);
         
-        return await aocCommand.InvokeAsync(args);
-    }
+        var command = new Command("solve", "Solve Advent Of Code Problem");
+        command.AddOption(yearOption);
+        command.AddOption(dayOption);
+        command.AddOption(partOption);
 
-    private static void RunAoCYearProblems(int year)
-    {
-        for (var i = 1; i <= 22; i++)
-        {
-            RunAoCDayProblem(year, i, new List<int> { 1, 2 });
-        }
+        command.SetHandler(RunAoCDayProblem, yearOption, dayOption, partOption);
+        
+        return await command.InvokeAsync(args);
     }
 
     private static void RunAoCDayProblem(int year, int day, IEnumerable<int> parts)

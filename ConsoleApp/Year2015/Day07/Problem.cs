@@ -2,14 +2,18 @@
 
 public class Problem
 {
-    public int Part1(List<string> lines)
+    public int Part1(string input)
     {
-        var calc = ConsoleApp.Year2015.Day07.InputParser.Parse(lines);
-        return calc["a"](new ConsoleApp.Year2015.Day07.InputParser.State());
+        var lines = input.Split("\n").ToList();
+        var calc = InputParser.Parse(lines);
+        return calc["a"](new InputParser.State());
     }
 
-    public int Part2(List<string> lines)
+    public int Part2(string input)
     {
-        var calc = ConsoleApp.Year2015.Day07.InputParser.Parse(lines);
-        return calc["a"](new ConsoleApp.Year2015.Day07.InputParser.State { ["b"] = calc["a"](new ConsoleApp.Year2015.Day07.InputParser.State()) });    }
+        var lines = input.Split("\n").ToList();
+        var calc = InputParser.Parse(lines);
+        return calc["a"](new InputParser.State
+            { ["b"] = calc["a"](new InputParser.State()) });
+    }
 }

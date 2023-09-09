@@ -2,15 +2,17 @@
 
 public class Problem
 {
-    public int Part1(List<string> input) =>
-        input.Count(word =>
+    public int Part1(string input) =>
+        input.Split("\n")
+            .Count(word =>
             word.ContainsAtLeastOnceLetterTwice() &&
             word.ContainsAtLeastThreeVowels() &&
             word.DoesntContainsBackListLetterGroups()
         );
 
-    public int Part2(List<string> input) =>
-        input.Count(word =>
+    public int Part2(string input) =>
+        input.Split("\n")
+            .Count(word =>
             word.HasLetterWhichRepeatsWithExactlyOneLetterBetweenThem() &&
             word.HasLetterPair()
         );
