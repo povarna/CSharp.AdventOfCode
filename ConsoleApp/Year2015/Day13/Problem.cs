@@ -15,9 +15,9 @@ public class Problem
         var dict = new Dictionary<(string, string), int>();
         foreach (var line in input.Split('\n'))
         {
-            var m = Regex.Match(line, @"(.*) would (.*) (.*) happiness units by sitting next to (.*).");
-            var a = m.Groups[1].Value;
-            var b = m.Groups[4].Value;
+            var m = Regex.Match(line, @"(.*) would (.*) (.*) happiness units by sitting next to (.*)\.");
+            var a = m.Groups[1].Value.Trim();
+            var b = m.Groups[4].Value.Trim();
             var happiness = int.Parse(m.Groups[3].Value) * (m.Groups[2].Value == "gain" ? 1 : -1);
             if (!dict.ContainsKey((a, b)))
             {
