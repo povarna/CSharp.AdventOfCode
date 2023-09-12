@@ -58,7 +58,7 @@ class Program
 
             var response =
                 magicMethod?.Invoke(magicClassObject, new object[] { input });
-            Console.WriteLine($"AOC2015, Day{dayNumber}, Part{part} solution result: {response}");
+            Console.WriteLine($"AOC{year}, Day{dayNumber}, Part{part} solution result: {response}");
         }
     }
 }
