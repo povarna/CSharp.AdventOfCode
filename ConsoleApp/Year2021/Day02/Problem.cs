@@ -9,7 +9,7 @@ public class Problem
         
         foreach (var instruction in instructions)
         {
-            position.Move(instruction.Direction, instruction.Units);
+            position.MovePart1(instruction.Direction, instruction.Units);
         }
         
         return position.Horizontal * position.Depth;
@@ -17,7 +17,15 @@ public class Problem
 
     public int Part2(string input)
     {
-        return -1;
+        var instructions = ParseInput(input).ToList();
+        var position = Position.Initialize();
+        
+        foreach (var instruction in instructions)
+        {
+            position.MovePart2(instruction.Direction, instruction.Units);
+        }
+        
+        return position.Horizontal * position.Depth;
     }
 
     private static IEnumerable<Instruction> ParseInput(string input) =>
@@ -48,29 +56,50 @@ public sealed record Instruction(Direction Direction, int Units);
 
 public sealed class Position
 {
-    private Position(int horizontal, int depth)
+    private Position(int horizontal, int depth, int aim)
     {
         Horizontal = horizontal;
         Depth = depth;
+        Aim = aim;
     }
 
-    public static Position Initialize() => new(0, 0);
+    public static Position Initialize() => new(0, 0, 0);
 
     public int Horizontal { get; private set; }
     public int Depth { get; private set; }
+    private int Aim { get; set; }
     
-    public void Move(Direction direction, int units)
+    public void MovePart1(Direction direction, int unit)
     {
         switch (direction)
         {
             case Direction.Forward:
-                Horizontal += units;
+                Horizontal += unit;
                 break;
             case Direction.Down:
-                Depth += units;
+                Depth += unit;
                 break;
             case Direction.Up:
-                Depth -= units;
+                Depth -= unit;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, "Invalid direction");
+        }
+    }
+    
+    public void MovePart2(Direction direction, int unit)
+    {
+        switch (direction)
+        {
+            case Direction.Forward:
+                Horizontal += unit;
+                Depth += Aim * unit;
+                break;
+            case Direction.Down:
+                Aim += unit;
+                break;
+            case Direction.Up:
+                Aim -= unit;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, "Invalid direction");
