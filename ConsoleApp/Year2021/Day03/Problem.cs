@@ -6,60 +6,108 @@ public class Problem
 {
     public int Part1(string input)
     {
-        var grid = ParseInputAsDataGrid(input);
+        var grid = ParseInputAsAnArray(input);
         var (gamaRate, epsilonRate) = GetRates(grid);
         return CalculateBinaryRate(gamaRate) * CalculateBinaryRate(epsilonRate);
     }
 
-
     public int Part2(string input)
     {
-        return -1;
-    }
+        var grid = ParseInputAsAnArray(input);
+        // grid.PrintGrid();
 
-    private static int[,] ParseInputAsDataGrid(string input)
-    {
-        var lines = input.Split("\n").ToArray();
-        if (lines.Length < 1)
+        var oxygenGeneratorRating = GetRating(grid, false);
+        var co2ScrubberRating = GetRating(grid, true);
+        if (oxygenGeneratorRating.Length != 1 || co2ScrubberRating.Length != 1)
         {
-            throw new ArgumentException("Invalid input!");
+            throw new Exception("Invalid results. The rating matrix should contains only one array!");
         }
 
-        var n = lines.Length;
-        var m = lines[0].Trim().Length;
+        return CalculateBinaryRate(oxygenGeneratorRating[0]) * CalculateBinaryRate(co2ScrubberRating[0]);
+    }
 
-        var grid = new int[n, m];
-
-        for (var i = 0; i < n; i++)
+    private static int[][] GetRating(int[][] grid, bool invertWiningCondition)
+    {
+        var i = 0;
+        while (grid.Length > 1)
         {
-            var currentLine = lines[i].Trim().ToCharArray();
-            for (var j = 0; j < m; j++)
-            {
-                var currentChar = currentLine[j];
-                var v = currentChar - '0';
-                grid[i, j] = v;
-            }
+            var newGrid = GetRating(grid, i, invertWiningCondition);
+            // newGrid.PrintGrid();
+            i += 1;
+            grid = newGrid;
         }
 
         return grid;
     }
 
-    private static (int[] gamaRate, int[] epsilonRate) GetRates(int[,] grid)
+    private static int[][] GetRating(int[][] grid, int bitPosition, bool invertWiningCondition)
     {
         var (m, n) = grid.GetDimensions();
+        // Console.WriteLine($"Grid dimensions are: {m} x {n}");
 
-        Console.WriteLine($"Grid dimensions are: {m} x {n}");
+        var count = 0;
+        for (var j = 0; j < m; j++)
+        {
+            count += grid[j][bitPosition];
+        }
 
+        var winingBit = CalculateWiningBit(invertWiningCondition, count, m);
+
+        var tmpGrid = new List<int[]>();
+        for (var t = 0; t < m; t++)
+        {
+            if (grid[t][bitPosition] == winingBit)
+            {
+                tmpGrid.Add(grid[t]);
+            }
+        }
+
+        return tmpGrid.ToArray();
+    }
+
+    private static int CalculateWiningBit(bool invertWiningCondition, int nrOfOnes, int nrOfRows)
+    {
+        int winingBit;
+        if (invertWiningCondition)
+        {
+            winingBit = nrOfOnes >= nrOfRows - nrOfOnes ? 0 : 1;
+        }
+        else
+        {
+            winingBit = nrOfOnes >= nrOfRows - nrOfOnes ? 1 : 0;
+        }
+
+        return winingBit;
+    }
+
+    private static int[][] ParseInputAsAnArray(string input)
+    {
+        return input.Split("\n")
+            .Select(line => line.Trim())
+            .Select(line => line.ToCharArray()
+                .Select(c => int.Parse(c.ToString()))
+                .ToArray()
+            )
+            .ToArray();
+    }
+
+    private static (int[] gamaRate, int[] epsilonRate) GetRates(IReadOnlyList<int[]> grid)
+    {
         var gamaRate = new List<int>();
         var epsilonRate = new List<int>();
+
+        var m = grid.Count;
+        var n = grid[0].Length;
+        Console.WriteLine($"Grid dimensions are: {m} x {n}");
 
         for (var i = 0; i < n; i++)
         {
             var count = 0;
             for (var j = 0; j < m; j++)
             {
-                count += grid[j, i];
+                count += grid[j][i];
             }
+
 
             if (count > m - count)
             {
