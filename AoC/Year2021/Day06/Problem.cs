@@ -60,24 +60,18 @@ public class Problem
         while (i < numberOfIterations)
         {
             var queueLenght = queue.Count;
-            var newLanternFishes = 0;
-            for (var j = 0; j < queueLenght; j++)
+            foreach (var _ in Enumerable.Range(0, queueLenght))
             {
                 var t = queue.Dequeue();
                 if (t - 1 < 0)
                 {
                     queue.Enqueue(6);
-                    newLanternFishes += 1;
+                    queue.Enqueue(8);
                 }
                 else
                 {
                     queue.Enqueue(t - 1);
                 }
-            }
-
-            foreach (var _ in Enumerable.Range(0, newLanternFishes))
-            {
-                queue.Enqueue(8);
             }
 
             i += 1;
