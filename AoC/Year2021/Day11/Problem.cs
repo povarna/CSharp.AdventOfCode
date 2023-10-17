@@ -4,12 +4,9 @@ public class Problem
 {
     public int Part1(string input) => CountTheNumberOfFlashes(input).Take(100).Sum();
 
-    public int Part2(string input)
-    {
-        return -1;
-    }
+    public int Part2(string input) => CountTheNumberOfFlashes(input).TakeWhile(flash => flash != 100).Count() + 1;
 
-    private IEnumerable<int> CountTheNumberOfFlashes( string input)
+    private IEnumerable<int> CountTheNumberOfFlashes(string input)
     {
         var map = GetMap(input);
 
@@ -24,7 +21,7 @@ public class Problem
                 if (map[key] == 10)
                 {
                     queue.Enqueue(key);
-                } 
+                }
             }
 
             while (queue.Any())
@@ -34,7 +31,7 @@ public class Problem
                 foreach (var neighbour in Neighbours(pos))
                 {
                     if (!map.ContainsKey(neighbour)) continue;
-                    
+
                     map[neighbour]++;
                     if (map[neighbour] == 10)
                     {
@@ -42,7 +39,7 @@ public class Problem
                     }
                 }
             }
-            
+
             // reset energy level
             foreach (var pos in flashed)
             {
