@@ -60,7 +60,7 @@ public class Problem
     {
         var separator = " -> ";
 
-        var parts = input.Split(Constants.END_OF_LINE);
+        var parts = input.Split(Constants.NEW_LINE);
         var rules = parts[1].Split("\n")
             .Select(l => l.Trim().Split(separator))
             .ToDictionary(arr => arr[0].Trim(), arr => arr[1].Trim());
