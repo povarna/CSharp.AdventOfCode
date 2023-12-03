@@ -46,8 +46,8 @@ public static class FilePathUtil
 
     private static void InputYearValidation(int year)
     {
-        if (year is < 2015 or > 2022)
+        if (year is < 2015 or > 2023)
             throw new ArgumentException(
-                $"Illegal year: {year} passed as input param. The number should be between 2015 and 2022");
+                $"Illegal year: {year} passed as input param. The number should be between 2015 and 2023");
     }
 }
